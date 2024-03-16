@@ -53,7 +53,9 @@ O exercício induz a boas práticas de programação e auxilia o programador na 
 
 ## Referências
 O arquivo makefile usado foi retirado de um dos projetos do professor Michel Pires, segue o link para o seu github:
+<p>
 DA SILVA, Michel Pires. Página Principal GitHub. <a> https://github.com/mpiress </a>. Acesso em 16 de Março de 2024.
+</p>
 
 ## Compilação e Execução
 
