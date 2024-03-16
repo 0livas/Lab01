@@ -1,20 +1,26 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Matriz.hpp"
 using namespace std;
 
 int DescobrirTamanho(){ //Lê a primeira linha do txt e pega o tamanho.
-    char Tamanho = 0;
+    int Tamanho = 0;
+    string Aux_de_linha;
     ifstream inFile;
+
     inFile.open("datasets/input.mps", ios::in);
     if(!inFile){
         cout << "O arquivo especificado (input.mps) não pôde ser aberto!" << endl;
         return 1;
     }
-    inFile >> Tamanho;
+
+    std::getline(inFile, Aux_de_linha);
     inFile.close();
-    int Resultado = Tamanho - '0';
-    return Resultado;
+    std::istringstream iss (Aux_de_linha);
+    iss >> Tamanho;
+
+    return Tamanho;
 };
 
 
@@ -36,19 +42,14 @@ char** CriaMatriz(int linhascolunas){ //Aloca a matriz dinâmicamente e cerca a 
 };
 
 
-char** PreencheMatriz(char**JogodaVida){ // Recebe a matriz já alocada e preenche seu interior baseado no arquivo txt.
+char** PreencheMatriz(char**JogodaVida, int Tamanho){ // Recebe a matriz já alocada e preenche seu interior baseado no arquivo txt.
     ifstream inFile;
     inFile.open("datasets/input.mps", ios::in);
     if(!inFile){
         cout << "O arquivo especificado (input.mps) não pôde ser aberto!" << endl;
         abort();
     }
-
-    char aux;
-    int Tamanho = 0;
-
-    inFile >> aux;
-    Tamanho = aux - '0';
+    
     Tamanho = Tamanho+1;
 
     for(int i=1; i<Tamanho; i++){
@@ -56,6 +57,7 @@ char** PreencheMatriz(char**JogodaVida){ // Recebe a matriz já alocada e preenc
             inFile >> JogodaVida[i][j];
         }
     }
+
     inFile.close();
     return JogodaVida;
 };
@@ -154,7 +156,7 @@ char** ProximaGeracao(char** JogodaVida, int Tamanho, int GeracaoAtual){ //Preen
 };
 
 
-void DestrutorMatriz(char** JogodaVida, int Tamanho, int Exibirmensagem){ // Destrói a matriz alocada.
+void DestrutorMatriz(char** JogodaVida, int Tamanho, int Exibirmensagem){ // Destrói a matriz alocada anteriormente.
     Tamanho = Tamanho + 2;
     for(int i = 0; i<Tamanho; i++){
         delete JogodaVida[i];
@@ -176,3 +178,24 @@ void Limpar_geracoesmps(){ //Apenas limpa o txt Geracoes.mps para executar a fun
     }
     return;
 };
+
+void Executar(){
+    Limpar_geracoesmps();
+    cout << "\nDigite o número de gerações a ser avaliado: ";
+    int NumerodeGeracoes, Cont_Geracoes = 0;
+    cin >> NumerodeGeracoes;
+
+    int Tam = DescobrirTamanho();
+    char** Mapa = CriaMatriz(Tam);
+    Mapa = PreencheMatriz(Mapa, Tam);
+    
+    do{
+        Mapa = ProximaGeracao(Mapa, Tam, Cont_Geracoes);
+        Cont_Geracoes = Cont_Geracoes + 1;
+        cout << endl;
+    }while(Cont_Geracoes!=NumerodeGeracoes+1);
+
+    DestrutorMatriz(Mapa, Tam, 1);
+    cout << "Finalizando o programa." << endl;
+    return;
+}
