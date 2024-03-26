@@ -30,6 +30,15 @@ O objetivo deste trabalho é usar a matriz de entrada fornecida pelo usuário em
 - ``` Matriz.hpp ```: Assinatura das funções relacionadas às matrizes;
 - ``` Matriz.cpp ```: Implementação das funções relacionadas às matrizes.
 
+## Funções
+- ```DescobrirTamanho()```: Essa função abre o arquivo input.mps e Lê sua primeira linha, que corresponde ao tamanho, e retorna o valor encontrado.
+- ```CriaMatriz(int linhascolunas)```: Essa função aloca dinâmicamente o espaço necessário para armazenar a matriz que será lida usando o valor que ela recebe (linhascolunas). Além disso, essa função também é a responsável por cercar o "Mapa" do Jogo da Vida, impedindo que o acesso a posições indevidas dentro do 'for' duplo aconteça.
+- ```PreencheMatriz(int**JogodaVida, int Tamanho)```: Essa função recebe a matriz já alocada, nomeada como JogodaVida, além do Tamanho da matriz. Com essas informações a função abre novamente o arquivo input.mps e lê os dados que estão armazenados nela, então esses dados são alocados em cada posição (ij) correspondente na matriz.
+- ```ProximaGeracao(int** JogodaVida, int Tamanho, int GeracaoAtual)```: Essa função recebe a matriz já preenchida, seu tamanho e a geração atual. Com esses dados a função cria uma matriz auxiliar, e analisa o desenvolvimento do jogo naquela geração, após isso a matriz auxiliar passará a ser a original, e a matriz original será colocada no arquivo geracoes.mps, então sera destruída para evitar vazamento de memória. Por fim a nova matriz original é retornada à main.
+- ```DestrutorMatriz(int** JogodaVida, int Tamanho, int ExibirMensagem)```: Essa função destrói a matriz que recebe, então dependendo do valor de "ExibirMensagem", uma mensagem sinalizando a destruição da matriz será mostrada no Terminal.
+- ```Limpar_geracoesmps()```: Essa função limpa o arquivo geracoes.mps para prepará-lo para ser escrito com as gerações da próxima matriz disponível no input.mps, independente se houve mudança ou não.
+- ```Executar()```: Essa função apenas executa o que estaria originalmente na Main.cpp. Nela está explicito a ordem de chamadas e funcionamento do programa.
+
 ## Resolução do Problema
 <p aligh='justify'>
 O primeiro passo para a resolução do problema é identificar o tamanho da matriz de maneira correta. Nas instruções do problema, sabe-se que a matriz sempre será quadrática, e seu tamanho corresponderá ao número na primeira linha do arquivo de texto input.mps. Feito isso, o programa alocará espaço para a matriz NxN. É importante dizer que, na implementação, a fim de evitar problemas futuros, a matriz criada tem tamanho N+2xN+2. Isso foi feito para que a matriz pudesse ser cercada com um caractér escolhido e, dessa forma, quando analisando cada posição P(ij) da matriz, não fosse acessada uma posição de memória não alocada anteriormente. Após criada a matriz, o programa abrirá novamente o arquivo de entrada input.txt e copiará a matriz pré-existente nela para a matriz criada pelo programa. Esse também será o último acesso ào arquivo de texto input.mps.
@@ -60,10 +69,10 @@ DA SILVA, Michel Pires. Página Principal GitHub. <a> https://github.com/mpiress
 ## Compilação e Execução
 
  Especificações da máquina em que o código foi rodado:
-  * Processador Intel Core i5, 7th Gen;
-  * Sistema Operacional Windows 10;
+  * Processador Intel Core i5, 10th Gen;
+  * Sistema Operacional Windows 11 Home;
   * Terminal do WSL: Ubuntu 22.04.5;
-  * 8GB de RAM.
+  * 16GB de RAM.
 * | Comando                |  Função                                                                                           |                     
   | -----------------------| ------------------------------------------------------------------------------------------------- |
   |  `make clean`          | Apaga a última compilação realizada contida na pasta build                                        |
