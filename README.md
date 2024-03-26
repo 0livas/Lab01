@@ -50,10 +50,12 @@ Feito isso, agora serão executadas sequências lógicas que seguem as regras es
 
 ## Resultados
 - Arquivo de Entrada ``` input.mps ```:
-<p align="center"><img src="imgs/Input.mps.png"></p>
+<p align="center"><img src="imgs/Input1.png"></p>
+<p align="center"><img src="imgs/Input2.png"></p>
 
 - Resultados no ``` Geracoes.mps ```:
-<p align="center"><img src="imgs/Geracoes.mps.png"></p>
+<p align="center"><img src="imgs/Geracoes1.png"></p>
+<p align="center"><img src="imgs/Geracoes2.png"></p>
 
 ## Conclusão
 <p align="justify">
