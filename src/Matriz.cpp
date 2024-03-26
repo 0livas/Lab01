@@ -24,16 +24,16 @@ int DescobrirTamanho(){ //Lê a primeira linha do txt e pega o tamanho.
 };
 
 
-char** CriaMatriz(int linhascolunas){ //Aloca a matriz dinâmicamente e cerca a cidade com um caracter à minha escolha.
-    char** JogodaVida = new char*[linhascolunas+2];
+int** CriaMatriz(int linhascolunas){ //Aloca a matriz dinâmicamente e cerca a cidade com um caracter à minha escolha.
+    int** JogodaVida = new int*[linhascolunas+2];
     for(int i = 0; i < linhascolunas+2; i++){
-        JogodaVida[i] = new char[linhascolunas+2];
+        JogodaVida[i] = new int[linhascolunas+2];
     } 
 
     for(int i = 0; i<linhascolunas+2; i++){
         for(int j = 0; j<linhascolunas+2; j++){
             if(i == 0 || j == 0 || i == linhascolunas+1 || j == linhascolunas+1){
-                JogodaVida[i][j] = '*';
+                JogodaVida[i][j] = 9;
             }
         }
     }
@@ -42,7 +42,7 @@ char** CriaMatriz(int linhascolunas){ //Aloca a matriz dinâmicamente e cerca a 
 };
 
 
-char** PreencheMatriz(char**JogodaVida, int Tamanho){ // Recebe a matriz já alocada e preenche seu interior baseado no arquivo txt.
+int** PreencheMatriz(int**JogodaVida, int Tamanho){ // Recebe a matriz já alocada e preenche seu interior baseado no arquivo txt.
     ifstream inFile;
     inFile.open("datasets/input.mps", ios::in);
     if(!inFile){
@@ -51,6 +51,9 @@ char** PreencheMatriz(char**JogodaVida, int Tamanho){ // Recebe a matriz já alo
     }
     
     Tamanho = Tamanho+1;
+    
+    int lixo = 0;
+    inFile >> lixo;
 
     for(int i=1; i<Tamanho; i++){
         for(int j=1; j<Tamanho; j++){
@@ -63,8 +66,8 @@ char** PreencheMatriz(char**JogodaVida, int Tamanho){ // Recebe a matriz já alo
 };
 
 
-char** ProximaGeracao(char** JogodaVida, int Tamanho, int GeracaoAtual){ //Preenche uma matriz auxiliar da pŕoxima geração do jogo e escreve a geração anterior no .mps de saída
-    char** MatrizAux = CriaMatriz(Tamanho);
+int** ProximaGeracao(int** JogodaVida, int Tamanho, int GeracaoAtual){ //Preenche uma matriz auxiliar da pŕoxima geração do jogo e escreve a geração anterior no .mps de saída
+    int** MatrizAux = CriaMatriz(Tamanho);
     
     for(int i=0; i<Tamanho+2; i++){
         for(int j=0; j<Tamanho+2; j++){
@@ -77,57 +80,57 @@ char** ProximaGeracao(char** JogodaVida, int Tamanho, int GeracaoAtual){ //Preen
     for(int i = 1; i<Tamanho+1; i++){
         for(int j = 1; j<Tamanho+1; j++){
             vizinhos = 0;
-            if(JogodaVida[i-1][j-1] == '1'){
+            if(JogodaVida[i-1][j-1] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i-1][j] == '1'){
+            if(JogodaVida[i-1][j] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i-1][j+1] == '1'){
+            if(JogodaVida[i-1][j+1] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i][j-1] == '1'){
+            if(JogodaVida[i][j-1] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i][j+1] == '1'){
+            if(JogodaVida[i][j+1] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i+1][j-1] == '1'){
+            if(JogodaVida[i+1][j-1] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i+1][j] == '1'){
+            if(JogodaVida[i+1][j] == 1){
                 vizinhos++;
             }
-            if(JogodaVida[i+1][j+1] == '1'){
+            if(JogodaVida[i+1][j+1] == 1){
                 vizinhos++;
             }
             
-            if(JogodaVida[i][j] == '1' && vizinhos < 2){
-                MatrizAux[i][j] = '0';
+            if(JogodaVida[i][j] == 1 && vizinhos < 2){
+                MatrizAux[i][j] = 0;
             }
 
-            if(JogodaVida[i][j] == '1' && vizinhos > 3){
-                MatrizAux[i][j] = '0';
+            if(JogodaVida[i][j] == 1 && vizinhos > 3){
+                MatrizAux[i][j] = 0;
             }
 
-            if(JogodaVida[i][j] == '1' && vizinhos == 2){
-                MatrizAux[i][j] = '1';
+            if(JogodaVida[i][j] == 1 && vizinhos == 2){
+                MatrizAux[i][j] = 1;
             }
 
-            if(JogodaVida[i][j] == '1' && vizinhos == 3){
-                MatrizAux[i][j] = '1';
+            if(JogodaVida[i][j] == 1 && vizinhos == 3){
+                MatrizAux[i][j] = 1;
             }
 
-            if(JogodaVida[i][j] == '0' && vizinhos == 3){
-                MatrizAux[i][j] = '1';
+            if(JogodaVida[i][j] == 0 && vizinhos == 3){
+                MatrizAux[i][j] = 1;
             }
 
-            if(JogodaVida[i][j] == '0' && vizinhos < 3){
-                MatrizAux[i][j] = '0';
+            if(JogodaVida[i][j] == 0 && vizinhos < 3){
+                MatrizAux[i][j] = 0;
             }
 
-            if(JogodaVida[i][j] == '0' && vizinhos > 3){
-                MatrizAux[i][j] = '0';
+            if(JogodaVida[i][j] == 0 && vizinhos > 3){
+                MatrizAux[i][j] = 0;
             }
         }
     }
@@ -143,7 +146,7 @@ char** ProximaGeracao(char** JogodaVida, int Tamanho, int GeracaoAtual){ //Preen
 
     for(int i = 1; i<Tamanho+1; i++){
         for(int j = 1; j<Tamanho+1; j++){
-            outFIle << JogodaVida[i][j];
+            outFIle << JogodaVida[i][j] << ' ';
         }
         outFIle << endl;
     }
@@ -156,7 +159,7 @@ char** ProximaGeracao(char** JogodaVida, int Tamanho, int GeracaoAtual){ //Preen
 };
 
 
-void DestrutorMatriz(char** JogodaVida, int Tamanho, int Exibirmensagem){ // Destrói a matriz alocada anteriormente.
+void DestrutorMatriz(int** JogodaVida, int Tamanho, int Exibirmensagem){ // Destrói a matriz alocada anteriormente.
     Tamanho = Tamanho + 2;
     for(int i = 0; i<Tamanho; i++){
         delete JogodaVida[i];
@@ -186,7 +189,7 @@ void Executar(){
     cin >> NumerodeGeracoes;
 
     int Tam = DescobrirTamanho();
-    char** Mapa = CriaMatriz(Tam);
+    int** Mapa = CriaMatriz(Tam);
     Mapa = PreencheMatriz(Mapa, Tam);
     
     do{
